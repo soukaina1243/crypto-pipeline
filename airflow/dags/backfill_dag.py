@@ -1,17 +1,4 @@
-"""
-DAY 6 — Airflow batch DAG: historical backfill with retries + alerting
 
-CONCEPT:
-Your inflation project's Airflow DAG (Recalculate KPIs -> Data Quality
-Check -> Log Execution) didn't handle failure explicitly. In production,
-DAGs need: retries (transient API/network failures shouldn't kill the
-run), and alerting (someone needs to know when it fails for good).
-
-This DAG pulls historical daily OHLC data for your tracked coins and
-loads it into Postgres, once a day.
-
-Your job: fill in the TODOs.
-"""
 
 from datetime import datetime, timedelta
 from airflow import DAG
@@ -40,7 +27,7 @@ def fetch_and_load_historical(coin: str, **context):
         port=5432,
         dbname="postgres",
         user="postgres.fjgwwsffebkdjrghtqkv",
-        password="cryptopipeline2026",
+        password="ur password",
         sslmode="require",
         gssencmode="disable",
         connect_timeout=15,
@@ -72,17 +59,6 @@ def fetch_and_load_historical(coin: str, **context):
 
 def alert_on_failure(context):
 
-    """
-    TODO 2:
-    A simple alerting callback. For this project, printing/logging is
-    enough (you don't need real Slack/email setup) — but structure it
-    like you would for a real alert, so the pattern is there.
-
-    Hint:
-    task_instance = context.get("task_instance")
-    print(f"[ALERT] Task {task_instance.task_id} failed on {context.get('execution_date')}")
-    # In a real setup: send to Slack webhook / SES email here instead of print()
-    """
     task_instance = context.get("task_instance")
     print(f"[ALERT] Task {task_instance.task_id} failed on {context.get('execution_date')}")
     
@@ -90,7 +66,7 @@ def alert_on_failure(context):
 
 default_args = {
     "owner": "soukaina",
-    "retries": 3,                        # TODO 3: is 3 reasonable? justify it in your notes
+    "retries": 3,                        
     "retry_delay": timedelta(minutes=5),
     "on_failure_callback": alert_on_failure,
 }
