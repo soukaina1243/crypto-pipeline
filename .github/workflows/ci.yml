@@ -67,4 +67,4 @@ jobs:
       # TODO: add the step that runs `dbt test`, working-directory: dbt_project
       - name: dbt test
         working-directory: dbt_project
-        run: echo "TODO -- replace with: dbt test"
+        run: dbt test
