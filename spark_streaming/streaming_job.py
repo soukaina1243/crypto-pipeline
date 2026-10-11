@@ -1,20 +1,3 @@
-"""
-DAY 2 — Spark Structured Streaming: windowed aggregation
-
-CONCEPT:
-This mirrors StreamingAnalysis.scala from the NASA project:
-tumbling windows + watermark, but in PySpark instead of Scala, reading
-from your own Kafka topic instead of the NASA one.
-
-Recap:
-- "Tumbling window" = fixed, non-overlapping time buckets (e.g. every 5 min).
-- "Watermark" = how late an event is allowed to arrive and still count
-  toward its window, before Spark discards it and frees memory.
-
-Your job: fill in the TODOs. Run with:
-  spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.1,\
-  org.postgresql:postgresql:42.7.3 spark_streaming/streaming_job.py
-"""
 
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import from_json, col, window, avg, min as spark_min, max as spark_max
@@ -27,7 +10,7 @@ TOPIC = "crypto-prices"
 JDBC_URL = "jdbc:postgresql://aws-0-eu-central-1.pooler.supabase.com:5432/postgres"
 JDBC_PROPERTIES = {
     "user": "postgres.fjgwwsffebkdjrghtqkv",
-    "password": "cryptopipeline2026",
+    "password": "ur password",
     "driver": "org.postgresql.Driver",
 }
 schema = StructType([
@@ -87,21 +70,7 @@ def windowed_aggregation(df):
 
 
 def write_to_postgres(batch_df, batch_id):
-    """
-    TODO 2:
-    Write `batch_df` to a Postgres table `crypto_windowed_prices` in
-    append mode, using JDBC_URL and JDBC_PROPERTIES. Wrap it in a
-    try/except so one bad batch doesn't kill the whole stream — same
-    fault-tolerance pattern as StreamingDatabaseWriter.scala's
-    foreachBatch + Try/catch.
-
-    Hint:
-    (
-        batch_df.write
-        .jdbc(url=JDBC_URL, table="crypto_windowed_prices", mode="append",
-              properties=JDBC_PROPERTIES)
-    )
-    """
+    
     try:
         batch_df.write.jdbc(
             url=JDBC_URL,
