@@ -57,8 +57,9 @@ jobs:
         run: |
           PGPASSWORD=crypto_ci psql -h localhost -U crypto -d crypto_pipeline -c "
             CREATE TABLE IF NOT EXISTS crypto_windowed_prices (
-              window jsonb, coin text, avg_price double precision,
-              min_price double precision, max_price double precision);"
+              window_start timestamp, window_end timestamp, coin text,
+              avg_price double precision, min_price double precision,
+              max_price double precision);"
 
       - name: dbt run
         working-directory: dbt_project
