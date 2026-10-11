@@ -11,7 +11,7 @@ crypto_pipeline:
       type: postgres
       host: localhost        # TODO: swap for your RDS/Supabase host on Day 3
       user: crypto
-      password: crypto_dev_only
+      password: crypto_ci
       port: 5432
       dbname: crypto_pipeline
       schema: public
