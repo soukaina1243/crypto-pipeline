@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: stg_crypto_prices
+    description: "Cleaned, typed staging table of windowed crypto price aggregates."
+    columns:
+      - name: coin
+        description: "Coin id, e.g. bitcoin, ethereum, solana."
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['bitcoin', 'ethereum', 'solana']
+
+      - name: window_start
+        description: "Start of the aggregation window."
+        tests:
+          - not_null
+
+      - name: avg_price
+        description: "Average USD price within the window."
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                inclusive: false

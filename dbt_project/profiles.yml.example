@@ -1,0 +1,18 @@
+# Copy this to ~/.dbt/profiles.yml and fill in your real credentials.
+# Never commit the real profiles.yml — add it to .gitignore.
+#
+# DAY 3 TODO: replace host/user/password with your cloud Postgres
+# (AWS RDS endpoint or Supabase connection string) instead of localhost.
+
+crypto_pipeline:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: localhost        # TODO: swap for your RDS/Supabase host on Day 3
+      user: crypto
+      password: crypto_dev_only
+      port: 5432
+      dbname: crypto_pipeline
+      schema: public
+      threads: 4

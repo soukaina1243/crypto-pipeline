@@ -1,0 +1,43 @@
+# DAY 6 — Airflow via Docker (no pip install needed)
+#
+# CONCEPT:
+# "airflow standalone" runs the scheduler + webserver + a built-in SQLite
+# DB in one container — not production-grade, but perfect for learning
+# and demoing on a CV project. This sidesteps all the dependency-conflict
+# pain from installing Airflow with pip.
+#
+# Usage:
+#   docker compose -f airflow/docker-compose.airflow.yml up
+#
+# Then open http://localhost:8080
+# Username/password are printed in the container logs on first startup
+# (search for "Simple auth manager" or "standalone | Login with username").
+#
+# Your DAG file (backfill_dag.py) is mounted straight from your repo, so
+# editing it locally and refreshing the Airflow UI is all you need.
+
+version: "3.8"
+
+services:
+  airflow:
+    image: apache/airflow:2.10.2
+    command: standalone
+    ports:
+      - "8080:8080"
+    environment:
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      # lets the DAG reach Postgres running in your main docker-compose.yml
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: "sqlite:////opt/airflow/airflow.db"
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - airflow_data:/opt/airflow
+    networks:
+      - default
+
+networks:
+  default:
+    name: crypto-pipeline_default   # joins the same network as your main docker-compose.yml
+    external: true
+
+volumes:
+  airflow_data:

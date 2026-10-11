@@ -1,0 +1,70 @@
+# DAY 7 — CI pipeline
+#
+# CONCEPT:
+# On every push, this spins up a throwaway Postgres, installs dbt,
+# runs your models and tests, and fails the build (red X on GitHub) if
+# anything breaks. This is the single highest-signal line you can add
+# to a junior DE CV: it proves you don't just write code, you verify it.
+#
+# TODO: this workflow is intentionally left with one gap — the step
+# that actually runs `dbt test` is missing its `run:` command. Fill it in.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  dbt-test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: crypto
+          POSTGRES_PASSWORD: crypto_ci
+          POSTGRES_DB: crypto_pipeline
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dbt
+        run: pip install dbt-postgres==1.8.5
+
+      - name: Configure dbt profile
+        run: |
+          mkdir -p ~/.dbt
+          cp dbt_project/profiles.yml.example ~/.dbt/profiles.yml
+          sed -i 's/localhost/localhost/' ~/.dbt/profiles.yml
+
+      - name: Seed minimal schema for CI
+        run: |
+          PGPASSWORD=crypto_ci psql -h localhost -U crypto -d crypto_pipeline -c "
+            CREATE TABLE IF NOT EXISTS crypto_windowed_prices (
+              window jsonb, coin text, avg_price double precision,
+              min_price double precision, max_price double precision);"
+
+      - name: dbt run
+        working-directory: dbt_project
+        run: dbt run
+
+      # TODO: add the step that runs `dbt test`, working-directory: dbt_project
+      - name: dbt test
+        working-directory: dbt_project
+        run: echo "TODO -- replace with: dbt test"

@@ -1,0 +1,10 @@
+# DAY 6 — Airflow, the easy way
+#
+# We switched to running Airflow via Docker instead of pip (see
+# airflow/docker-compose.airflow.yml). Airflow pins very strict versions
+# of its own dependencies and reliably conflicts with dbt/pandas/streamlit
+# when pip-installed alongside them — this is a known, common problem, not
+# something specific to your machine. Docker sidesteps it entirely: no
+# venv, no version conflicts, same image everyone uses in production.
+#
+# Nothing to install here. See airflow/docker-compose.airflow.yml.
