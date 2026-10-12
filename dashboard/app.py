@@ -1,10 +1,4 @@
-"""
-DAY 8 — Streamlit dashboard
 
-Reads from the `daily_coin_summary` dbt mart and plots price + volatility
-per coin. Deploy this on Streamlit Cloud (same as your real estate
-project) for a live demo link on your CV.
-"""
 
 import streamlit as st
 import pandas as pd
