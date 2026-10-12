@@ -5,11 +5,6 @@ in real time with Spark Structured Streaming, stored in a cloud Postgres databas
 (Supabase), transformed and tested with dbt, orchestrated with Airflow, verified
 on every push with CI, and visualized in a Streamlit dashboard.
 
-Built as a follow-up to a group Big Data project (NASA Log Analysis Pipeline —
-Scala/Spark/Kafka), reusing the same batch+streaming skeleton while adding the
-skills that project was missing: a cloud data warehouse, dbt, automated data
-quality tests, and CI/CD.
-
 ## Architecture
 
 ```
