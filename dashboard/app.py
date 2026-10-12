@@ -18,7 +18,7 @@ DB_CONFIG = {
     "port": 5432,
     "dbname": "crypto_pipeline",
     "user": "crypto",
-    "password": "crypto_dev_only",
+    "password": "ur password",
 }
 
 
