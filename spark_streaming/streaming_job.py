@@ -10,7 +10,7 @@ TOPIC = "crypto-prices"
 JDBC_URL = "jdbc:postgresql://aws-0-eu-central-1.pooler.supabase.com:5432/postgres"
 JDBC_PROPERTIES = {
     "user": "postgres.fjgwwsffebkdjrghtqkv",
-    "password": "ur password",
+    "password": "cryptopipeline2026",
     "driver": "org.postgresql.Driver",
 }
 schema = StructType([
